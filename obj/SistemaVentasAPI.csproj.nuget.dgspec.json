@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tomas\\OneDrive\\Escritorio\\Proyecto-empresa-mayorista\\SistemaVentasAPI\\SistemaVentasAPI.csproj": {}
+    "C:\\Users\\tomas\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tomas\\OneDrive\\Escritorio\\Proyecto-empresa-mayorista\\SistemaVentasAPI\\SistemaVentasAPI.csproj": {
+    "C:\\Users\\tomas\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tomas\\OneDrive\\Escritorio\\Proyecto-empresa-mayorista\\SistemaVentasAPI\\SistemaVentasAPI.csproj",
+        "projectUniqueName": "C:\\Users\\tomas\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj",
         "projectName": "SistemaVentasAPI",
-        "projectPath": "C:\\Users\\tomas\\OneDrive\\Escritorio\\Proyecto-empresa-mayorista\\SistemaVentasAPI\\SistemaVentasAPI.csproj",
+        "projectPath": "C:\\Users\\tomas\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj",
         "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tomas\\OneDrive\\Escritorio\\Proyecto-empresa-mayorista\\SistemaVentasAPI\\obj\\",
+        "outputPath": "C:\\Users\\tomas\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -62,7 +62,11 @@
             },
             "Pomelo.EntityFrameworkCore.MySql": {
               "target": "Package",
-              "version": "[8.0.3, )"
+              "version": "[9.0.0-preview.3.efcore.9.0.0, )"
+            },
+            "Swashbuckle.AspNetCore": {
+              "target": "Package",
+              "version": "[8.1.1, )"
             }
           },
           "imports": [
