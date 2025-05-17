@@ -1,5 +1,6 @@
 using Proyecto_Empresa_Mayorista.Data;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
