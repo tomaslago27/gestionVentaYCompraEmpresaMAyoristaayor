@@ -29,6 +29,36 @@ namespace Proyecto_Empresa_Mayorista.Controllers
             await _context.SaveChangesAsync();
             return CreatedAtAction(nameof(GetVentas), new { id = venta.Id }, venta);
         }
+        [HttpGet("venta-cliente-articulo")]
+        public IActionResult ObtenerVentaDeClienteYProducto(int idCliente, int idArticulo)
+        {
+        var ventas = _context.Ventas
+            .Where(v => v.ClienteId == idCliente)
+            .Join(_context.DetallesVenta,
+                v => v.Id,
+                dv => dv.VentaId,
+                (v, dv) => new { v, dv })
+            .Where(joined => joined.dv.ProductoId == idArticulo)
+            .Select(joined => new
+        {
+            joined.v.Id,
+            Cliente = joined.v.Cliente.Nombre,
+            Articulo = joined.dv.Producto.Nombre,
+            joined.dv.Cantidad,
+            joined.dv.PrecioUnitario,
+            Total = joined.dv.Cantidad * joined.dv.PrecioUnitario,
+            Fecha = joined.v.Fecha
+        })
+        .ToList();
+
+    if (ventas.Count == 0)
+    {
+        return NotFound("No se encontraron ventas para ese cliente y artículo.");
+    }
+
+    return Ok(ventas);
+}
+
     }
 }
 /*
