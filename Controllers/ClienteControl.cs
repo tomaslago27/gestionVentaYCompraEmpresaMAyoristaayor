@@ -36,4 +36,5 @@ namespace Proyecto_Empresa_Mayorista.Controllers
     La clase se llama ClienteController y hereda de ControllerBase.
     Incluye métodos para obtener la lista de clientes y agregar un nuevo cliente a la base de datos.
     Utiliza Entity Framework Core para interactuar con la base de datos a través del DbContext EmpresaDbContext.
+cambio
 */
