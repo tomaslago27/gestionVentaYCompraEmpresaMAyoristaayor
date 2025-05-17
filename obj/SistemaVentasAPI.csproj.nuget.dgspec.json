@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\tomas\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj": {}
+    "C:\\Users\\nahue\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj": {}
   },
   "projects": {
-    "C:\\Users\\tomas\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj": {
+    "C:\\Users\\nahue\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\tomas\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj",
+        "projectUniqueName": "C:\\Users\\nahue\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj",
         "projectName": "SistemaVentasAPI",
-        "projectPath": "C:\\Users\\tomas\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj",
-        "packagesPath": "C:\\Users\\tomas\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\tomas\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\obj\\",
+        "projectPath": "C:\\Users\\nahue\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\SistemaVentasAPI.csproj",
+        "packagesPath": "C:\\Users\\nahue\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\nahue\\OneDrive\\Documentos\\GitHub\\gestionVentaYCompraEmpresaMAyoristaayor\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\tomas\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\nahue\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net9.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -88,7 +86,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.203/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.204/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

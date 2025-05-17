@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Proyecto_Empresa_Mayorista.Data;
 
@@ -11,9 +12,11 @@ using Proyecto_Empresa_Mayorista.Data;
 namespace SistemaVentasAPI.Migrations
 {
     [DbContext(typeof(EmpresaDbContext))]
-    partial class EmpresaDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250517194012_ModificacionesEnLosModelos")]
+    partial class ModificacionesEnLosModelos
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
