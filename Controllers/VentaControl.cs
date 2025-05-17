@@ -36,7 +36,7 @@ namespace Proyecto_Empresa_Mayorista.Controllers
         {
             _context.Ventas.Add(venta);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetVentas), new { id = venta.Id }, venta);
+            return CreatedAtAction(nameof(GetVenta), new { id = venta.Id }, venta);
         }
 
         [HttpPut("{id}")]
@@ -71,6 +71,7 @@ namespace Proyecto_Empresa_Mayorista.Controllers
         }
     }
 }
+
 /*
     Esta clase define un controlador API para gestionar ventas en una aplicación ASP.NET Core.
     La clase se llama VentaController y hereda de ControllerBase.
