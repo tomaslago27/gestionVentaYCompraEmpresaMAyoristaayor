@@ -1,0 +1,21 @@
+using Microsoft.EntityFrameworkCore;
+using Proyecto_Empresa_Mayorista.Models;
+
+namespace Proyecto_Empresa_Mayorista.Data
+{
+    public class EmpresaDbContext : DbContext
+    {
+        public EmpresaDbContext(DbContextOptions<EmpresaDbContext> options)
+            : base(options) { }
+
+        public DbSet<Cliente> Clientes { get; set; }
+        public DbSet<Venta> Ventas { get; set; }
+        public DbSet<DetalleVenta> DetallesVenta { get; set; }
+    }
+}
+/*
+    Esta clase define un DbContext para una aplicación con Entity Framework Core.
+    La clase se llama EmpresaDbContext y hereda de DbContext.
+    Incluye DbSet para las entidades Cliente, Venta y DetalleVenta,
+    lo que permite realizar operaciones CRUD sobre estas tablas en la base de datos.
+*/
