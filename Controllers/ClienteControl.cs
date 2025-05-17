@@ -22,13 +22,48 @@ namespace Proyecto_Empresa_Mayorista.Controllers
             return await _context.Clientes.ToListAsync();
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Cliente>> GetCliente(int id)
+        {
+            var cliente = await _context.Clientes.FindAsync(id);
+
+            if (cliente == null)
+                return NotFound();
+
+            return cliente;
+        }
+
         [HttpPost]
         public async Task<ActionResult<Cliente>> PostCliente(Cliente cliente)
         {
             _context.Clientes.Add(cliente);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetClientes), new { id = cliente.Id }, cliente);
+            return CreatedAtAction(nameof(GetCliente), new { id = cliente.Id }, cliente);
         }
+         [HttpPut]
+         public async Task<IActionResult> PutCliente([FromQuery] int id, [FromBody] Cliente cliente)
+    {
+        if (id != cliente.Id)
+            return BadRequest();
+
+        _context.Entry(cliente).State = EntityState.Modified;
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    }
+
+         [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteCliente(int id)
+    {
+        var cliente = await _context.Clientes.FindAsync(id);
+        if (cliente == null)
+            return NotFound();
+
+        _context.Clientes.Remove(cliente);
+        await _context.SaveChangesAsync();
+
+        return NoContent();
+    } 
     }
 }
 /*
@@ -36,4 +71,5 @@ namespace Proyecto_Empresa_Mayorista.Controllers
     La clase se llama ClienteController y hereda de ControllerBase.
     Incluye métodos para obtener la lista de clientes y agregar un nuevo cliente a la base de datos.
     Utiliza Entity Framework Core para interactuar con la base de datos a través del DbContext EmpresaDbContext.
+cambio
 */
