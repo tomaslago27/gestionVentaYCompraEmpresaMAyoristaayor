@@ -42,8 +42,9 @@ namespace Proyecto_Empresa_Mayorista.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> PutProducto(int id, Producto producto)
         {
-            if (id != producto.Id)
-                return BadRequest();
+            var productoExiste = await _context.Producto.FindAsync(id);
+            if (productoExiste == null)
+                return NotFound();
             _context.Entry(producto).State = EntityState.Modified;
             try
             {

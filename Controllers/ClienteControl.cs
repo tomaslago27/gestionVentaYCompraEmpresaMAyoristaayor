@@ -44,8 +44,9 @@ namespace Proyecto_Empresa_Mayorista.Controllers
          [HttpPut]
          public async Task<IActionResult> PutCliente([FromQuery] int id, [FromBody] Cliente cliente)
     {
-        if (id != cliente.Id)
-            return BadRequest();
+       var clienteExiste = await _context.Clientes.FindAsync(id);
+        if (clienteExiste == null)
+            return NotFound();
 
         _context.Entry(cliente).State = EntityState.Modified;
         await _context.SaveChangesAsync();
