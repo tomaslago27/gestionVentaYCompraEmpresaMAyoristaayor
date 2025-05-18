@@ -27,12 +27,52 @@ namespace Proyecto_Empresa_Mayorista.Controllers
 
         }
 
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Venta>> GetVenta(int id)
+        {
+            var venta = await _context.Ventas.Include(v => v.Cliente).FirstOrDefaultAsync(v => v.Id == id);
+            if (venta == null)
+                return NotFound();
+            return venta;
+        }
+
         [HttpPost]
         public async Task<ActionResult<Venta>> PostVenta(Venta venta)
         {
             _context.Ventas.Add(venta);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetVentas), new { id = venta.Id }, venta);
+            return CreatedAtAction(nameof(GetVenta), new { id = venta.Id }, venta);
+        }
+
+        [HttpPut("{id}")]
+        public async Task<IActionResult> PutVenta(int id, Venta venta)
+        {
+            if (id != venta.Id)
+                return BadRequest();
+            _context.Entry(venta).State = EntityState.Modified;
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!_context.Ventas.Any(e => e.Id == id))
+                    return NotFound();
+                else
+                    throw;
+            }
+            return NoContent();
+        }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteVenta(int id)
+        {
+            var venta = await _context.Ventas.FindAsync(id);
+            if (venta == null)
+                return NotFound();
+            _context.Ventas.Remove(venta);
+            await _context.SaveChangesAsync();
+            return NoContent();
         }
         [HttpGet("venta-cliente-articulo")]
         public IActionResult ObtenerVentaDeClienteYProducto(int idCliente, int idArticulo)
@@ -66,6 +106,7 @@ namespace Proyecto_Empresa_Mayorista.Controllers
 
     }
 }
+
 /*
     Esta clase define un controlador API para gestionar ventas en una aplicación ASP.NET Core.
     La clase se llama VentaController y hereda de ControllerBase.
