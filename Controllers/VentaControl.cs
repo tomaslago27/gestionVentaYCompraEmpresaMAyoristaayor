@@ -19,7 +19,12 @@ namespace Proyecto_Empresa_Mayorista.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Venta>>> GetVentas()
         {
-            return await _context.Ventas.Include(v => v.Cliente).ToListAsync();
+            return await _context.Ventas
+                .Include(v => v.Cliente)
+                .Include(v => v.Detalles)
+                    .ThenInclude(dv => dv.Producto)
+                .ToListAsync();
+
         }
 
         [HttpPost]
