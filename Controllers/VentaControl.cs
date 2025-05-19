@@ -35,14 +35,61 @@ namespace Proyecto_Empresa_Mayorista.Controllers
                 return NotFound();
             return venta;
         }
-
         [HttpPost]
-        public async Task<ActionResult<Venta>> PostVenta(Venta venta)
+        public async Task<ActionResult<Venta>> PostVenta([FromBody] NuevaVentaDto nuevaVenta)
         {
+            // Verifica que existan el cliente y el producto
+            var cliente = await _context.Clientes.FindAsync(nuevaVenta.ClienteId);
+            if (cliente == null )
+            return BadRequest("Cliente o producto no encontrado.");
+
+            // Crea la venta
+            var venta = new Venta
+            {
+            ClienteId = cliente.Id,
+            Fecha = DateTime.Now,
+            Detalles = new List<DetalleVenta>
+            {
+                
+            }
+            };
+            foreach (var detalle in nuevaVenta.Detalles)
+            {
+                var producto = await _context.Producto.FindAsync(detalle.ProductoId);
+                if (producto == null)
+                    return BadRequest($"Producto con ID {detalle.ProductoId} no encontrado.");
+
+                venta.Detalles.Add(new DetalleVenta
+                {
+                    ProductoId = detalle.ProductoId,
+                    Cantidad = detalle.Cantidad,
+                    PrecioUnitario = producto.Precio
+                });
+                venta.Total += producto.Precio* detalle.Cantidad;
+                producto.Stock -= detalle.Cantidad;
+                _context.Producto.Update(producto);
+            }
             _context.Ventas.Add(venta);
             await _context.SaveChangesAsync();
-            return CreatedAtAction(nameof(GetVenta), new { id = venta.Id }, venta);
+
+            return CreatedAtAction(nameof(GetVenta), new { id = venta.Id }, new { venta.Id });
         }
+
+        // DTO para recibir los datos mínimos de la venta
+        public class NuevaVentaDto
+        {
+            public int ClienteId { get; set; }
+            public int ProductoId { get; set; }
+            public int Cantidad { get; set; }
+            public List<DetalleVentaDto> Detalles { get; set; }
+        }
+
+        public class DetalleVentaDto
+    {
+        public int ProductoId { get; set; }
+        public int Cantidad { get; set; }
+        public decimal PrecioUnitario { get; set; }
+    }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVenta(int id, Venta venta)

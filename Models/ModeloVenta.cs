@@ -4,7 +4,7 @@ namespace Proyecto_Empresa_Mayorista.Models
     {
         public int Id { get; set; }
         public DateTime Fecha { get; set; }
-        public int Total { get; set; }
+        public decimal Total { get; set; }
         public int ClienteId { get; set; }
         public Cliente Cliente { get; set; }
         public List<DetalleVenta> Detalles { get; set; }
