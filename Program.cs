@@ -22,6 +22,17 @@ builder.Services.AddControllers()
     .AddJsonOptions(x =>
         x.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.IgnoreCycles);
 
+// CORS
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("PermitirTodo", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyHeader()
+              .AllowAnyMethod();
+    });
+});
+
 var app = builder.Build();
 
 // Configuración de middleware
@@ -34,6 +45,7 @@ if (app.Environment.IsDevelopment())
 // Configuración del puerto del servidor
 app.Urls.Add("http://localhost:5165");
 
+app.UseCors("PermitirTodo");
 app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
