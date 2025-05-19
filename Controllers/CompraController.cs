@@ -26,7 +26,7 @@ namespace Proyecto_Empresa_Mayorista.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Compra>> GetCompra(int id)
         {
-            var compra = await _context.Compra.FindAsync(id);
+            var compra = await _context.Compra.Include(c => c.Detalles).ThenInclude(dv => dv.Producto).FirstOrDefaultAsync(c => c.Id == id);
             if (compra == null)
                 return NotFound();
             return compra;

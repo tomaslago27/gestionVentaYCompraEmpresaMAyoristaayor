@@ -30,7 +30,9 @@ namespace Proyecto_Empresa_Mayorista.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<Venta>> GetVenta(int id)
         {
-            var venta = await _context.Ventas.Include(v => v.Cliente).FirstOrDefaultAsync(v => v.Id == id);
+            var venta = await _context.Ventas.Include(v => v.Cliente)
+                .Include(v => v.Detalles)
+                    .ThenInclude(dv => dv.Producto).FirstOrDefaultAsync(v => v.Id == id);
             if (venta == null)
                 return NotFound();
             return venta;
