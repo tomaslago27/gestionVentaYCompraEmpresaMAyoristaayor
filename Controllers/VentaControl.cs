@@ -26,17 +26,32 @@ namespace Proyecto_Empresa_Mayorista.Controllers
                 .ToListAsync();
 
         }
+                // Consulta SQL equivalente:
+        // SELECT v.*, c.*, dv.*, p.*
+        // FROM Ventas v
+        // INNER JOIN Clientes c ON v.ClienteId = c.Id
+        // INNER JOIN DetallesVenta dv ON dv.VentaId = v.Id
+        // INNER JOIN Producto p ON dv.ProductoId = p.Id
+
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Venta>> GetVenta(int id)
         {
+
             var venta = await _context.Ventas.Include(v => v.Cliente)
                 .Include(v => v.Detalles)
-                    .ThenInclude(dv => dv.Producto).FirstOrDefaultAsync(v => v.Id == id);
-            if (venta == null)
+                    .ThenInclude(dv => dv.Producto).FirstOrDefaultAsync(v => v.Id == id);if (venta == null)
                 return NotFound();
             return venta;
         }
+                    // Consulta SQL equivalente:
+            // SELECT v.*, c.*, dv.*, p.*
+            // FROM Ventas v
+            // INNER JOIN Clientes c ON v.ClienteId = c.Id
+            // INNER JOIN DetallesVenta dv ON dv.VentaId = v.Id
+            // INNER JOIN Producto p ON dv.ProductoId = p.Id
+            // WHERE v.Id = {id}
+
         [HttpPost]
         public async Task<ActionResult<Venta>> PostVenta([FromBody] NuevaVentaDto nuevaVenta)
         {

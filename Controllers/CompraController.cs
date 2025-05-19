@@ -20,12 +20,29 @@ namespace Proyecto_Empresa_Mayorista.Controllers
         
         public async Task<ActionResult<IEnumerable<Compra>>> GetCompras()
         {
+            // Este código en SQL sería equivalente a realizar un SELECT con JOINs para traer las compras y sus detalles junto con los productos.
+            // Ejemplo de consulta SQL:
+            /*
+            SELECT c.*, d.*, p.*
+            FROM Compra c
+            LEFT JOIN DetalleCompra d ON c.Id = d.CompraId
+            LEFT JOIN Producto p ON d.ProductoId = p.Id
+            */
             return await _context.Compra.Include(c => c.Detalles).ThenInclude(dv => dv.Producto).ToListAsync();
         }
 
         [HttpGet("{id}")]
         public async Task<ActionResult<Compra>> GetCompra(int id)
         {
+            // Este código en SQL sería equivalente a realizar un SELECT con JOINs para traer una compra específica y sus detalles junto con los productos.
+            // Ejemplo de consulta SQL:
+            /*
+            SELECT c.*, d.*, p.*
+            FROM Compra c
+            LEFT JOIN DetalleCompra d ON c.Id = d.CompraId
+            LEFT JOIN Producto p ON d.ProductoId = p.Id
+            WHERE c.Id = @id
+            */
             var compra = await _context.Compra.Include(c => c.Detalles).ThenInclude(dv => dv.Producto).FirstOrDefaultAsync(c => c.Id == id);
             if (compra == null)
                 return NotFound();
