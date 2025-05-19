@@ -48,10 +48,16 @@ namespace Proyecto_Empresa_Mayorista.Controllers
         if (clienteExiste == null)
             return NotFound();
 
-        _context.Entry(cliente).State = EntityState.Modified;
+        clienteExiste.Nombre = cliente.Nombre;
+        clienteExiste.Apellido = cliente.Apellido;
+        clienteExiste.DNI = cliente.DNI;
+        clienteExiste.Domicilio = cliente.Domicilio;
+        clienteExiste.Localidad = cliente.Localidad;
+        clienteExiste.Telefono = cliente.Telefono;
+        clienteExiste.Email = cliente.Email;
         await _context.SaveChangesAsync();
 
-        return NoContent();
+        return Ok(clienteExiste);
     }
 
          [HttpDelete("{id}")]
