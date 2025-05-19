@@ -1,11 +1,16 @@
-using Proyecto_Empresa_Mayorista.Data;
+using DotNetEnv;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.OpenApi.Models;
+using Proyecto_Empresa_Mayorista.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// Cargar variables de entorno desde el archivo .env
+DotNetEnv.Env.Load();
+
 // Configurar la cadena de conexión
-var connectionString = builder.Configuration.GetConnectionString("EmpresaDb");
+var connectionString = Environment.GetEnvironmentVariable("DB_CONNECTION_STRING") 
+    ?? builder.Configuration.GetConnectionString("EmpresaDb");
 builder.Services.AddDbContext<EmpresaDbContext>(options =>
     options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString)));
 
@@ -25,6 +30,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Configuración del puerto del servidor
+app.Urls.Add("http://localhost:5165");
 
 app.UseHttpsRedirection();
 app.UseAuthorization();
