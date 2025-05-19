@@ -26,7 +26,7 @@ namespace Proyecto_Empresa_Mayorista.Controllers
                 .ToListAsync();
 
         }
-                // Consulta SQL equivalente:
+        // Consulta SQL equivalente:
         // SELECT v.*, c.*, dv.*, p.*
         // FROM Ventas v
         // INNER JOIN Clientes c ON v.ClienteId = c.Id
@@ -40,35 +40,35 @@ namespace Proyecto_Empresa_Mayorista.Controllers
 
             var venta = await _context.Ventas.Include(v => v.Cliente)
                 .Include(v => v.Detalles)
-                    .ThenInclude(dv => dv.Producto).FirstOrDefaultAsync(v => v.Id == id);if (venta == null)
+                    .ThenInclude(dv => dv.Producto).FirstOrDefaultAsync(v => v.Id == id); if (venta == null)
                 return NotFound();
             return venta;
         }
-                    // Consulta SQL equivalente:
-            // SELECT v.*, c.*, dv.*, p.*
-            // FROM Ventas v
-            // INNER JOIN Clientes c ON v.ClienteId = c.Id
-            // INNER JOIN DetallesVenta dv ON dv.VentaId = v.Id
-            // INNER JOIN Producto p ON dv.ProductoId = p.Id
-            // WHERE v.Id = {id}
+        // Consulta SQL equivalente:
+        // SELECT v.*, c.*, dv.*, p.*
+        // FROM Ventas v
+        // INNER JOIN Clientes c ON v.ClienteId = c.Id
+        // INNER JOIN DetallesVenta dv ON dv.VentaId = v.Id
+        // INNER JOIN Producto p ON dv.ProductoId = p.Id
+        // WHERE v.Id = {id}
 
         [HttpPost]
         public async Task<ActionResult<Venta>> PostVenta([FromBody] NuevaVentaDto nuevaVenta)
         {
             // Verifica que existan el cliente y el producto
             var cliente = await _context.Clientes.FindAsync(nuevaVenta.ClienteId);
-            if (cliente == null )
-            return BadRequest("Cliente o producto no encontrado.");
+            if (cliente == null)
+                return BadRequest("Cliente o producto no encontrado.");
 
             // Crea la venta
             var venta = new Venta
             {
-            ClienteId = cliente.Id,
-            Fecha = DateTime.Now,
-            Detalles = new List<DetalleVenta>
-            {
-                
-            }
+                ClienteId = cliente.Id,
+                Fecha = DateTime.Now,
+                Detalles = new List<DetalleVenta>
+                {
+
+                }
             };
             foreach (var detalle in nuevaVenta.Detalles)
             {
@@ -82,7 +82,7 @@ namespace Proyecto_Empresa_Mayorista.Controllers
                     Cantidad = detalle.Cantidad,
                     PrecioUnitario = producto.Precio
                 });
-                venta.Total += producto.Precio* detalle.Cantidad;
+                venta.Total += producto.Precio * detalle.Cantidad;
                 producto.Stock -= detalle.Cantidad;
                 _context.Producto.Update(producto);
             }
@@ -102,11 +102,11 @@ namespace Proyecto_Empresa_Mayorista.Controllers
         }
 
         public class DetalleVentaDto
-    {
-        public int ProductoId { get; set; }
-        public int Cantidad { get; set; }
-        public decimal PrecioUnitario { get; set; }
-    }
+        {
+            public int ProductoId { get; set; }
+            public int Cantidad { get; set; }
+            public decimal PrecioUnitario { get; set; }
+        }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> PutVenta(int id, Venta venta)
@@ -137,7 +137,8 @@ namespace Proyecto_Empresa_Mayorista.Controllers
             _context.Ventas.Remove(venta);
             await _context.SaveChangesAsync();
             return NoContent();
-        }        [HttpGet("venta-cliente-articulo")]
+        }
+        [HttpGet("venta-cliente-articulo")]
         public IActionResult ObtenerVentaDeClienteYProducto(int idCliente, int idArticulo)
         {
             // Filtra las ventas que pertenecen al cliente especificado por idCliente
@@ -148,7 +149,7 @@ namespace Proyecto_Empresa_Mayorista.Controllers
                     v => v.Id,                  // Clave de la entidad Venta
                     dv => dv.VentaId,           // Clave de la entidad DetalleVenta
                     (v, dv) => new { v, dv })   // Crea un objeto anónimo con la venta y su detalle
-                // Filtra los resultados para obtener solo los detalles del artículo especificado por idArticulo
+                                                // Filtra los resultados para obtener solo los detalles del artículo especificado por idArticulo
                 .Where(joined => joined.dv.ProductoId == idArticulo)
                 // Proyecta los datos seleccionados en un nuevo objeto anónimo con la información relevante
                 .Select(joined => new
@@ -162,13 +163,68 @@ namespace Proyecto_Empresa_Mayorista.Controllers
                     Fecha = joined.v.Fecha                       // Fecha de la venta
                 })
                 .ToList(); // Convierte el resultado a una lista
-    if (ventas.Count == 0)
-    {
-        return NotFound("No se encontraron ventas para ese cliente y artículo.");
-    }
+            if (ventas.Count == 0)
+            {
+                return NotFound("No se encontraron ventas para ese cliente y artículo.");
+            }
 
-    return Ok(ventas);
-}
+            return Ok(ventas);
+        }
+
+
+
+
+
+
+        // Consulta SQL equivalente:
+        // SELECT v.Id, c.Nombre AS Cliente, p.Nombre AS Articulo, dv.Cantidad, dv.PrecioUnitario,
+        //        (dv.Cantidad * dv.PrecioUnitario) AS Total, v.Fecha
+        // FROM Ventas v
+        // INNER JOIN Clientes c ON v.ClienteId = c.Id
+        // INNER JOIN DetallesVenta dv ON dv.VentaId = v.Id
+        // INNER JOIN Producto p ON dv.ProductoId = p.Id
+        // WHERE v.ClienteId = @idCliente AND dv.ProductoId = @idArticulo
+
+        [HttpGet("ventas-por-cliente")]
+        public IActionResult ObtenerVentasPorCliente(int idCliente)
+        {
+            var ventas = _context.Ventas
+            .Where(v => v.ClienteId == idCliente)
+            .Include(v => v.Cliente)
+            .Include(v => v.Detalles)
+            .ThenInclude(dv => dv.Producto)
+            .Select(v => new
+            {
+            v.Id,
+            Cliente = v.Cliente.Nombre,
+            Fecha = v.Fecha,
+            Total = v.Total,
+            Detalles = v.Detalles.Select(dv => new
+            {
+                Articulo = dv.Producto.Nombre,
+                dv.Cantidad,
+                dv.PrecioUnitario,
+                Subtotal = dv.Cantidad * dv.PrecioUnitario
+            }).ToList()
+            })
+            .ToList();
+
+            if (ventas.Count == 0)
+            {
+            return NotFound("No se encontraron ventas para ese cliente.");
+            }
+
+            return Ok(ventas);
+        }
+        // Consulta SQL equivalente:
+        // SELECT v.Id, c.Nombre AS Cliente, v.Fecha, v.Total,
+        //        p.Nombre AS Articulo, dv.Cantidad, dv.PrecioUnitario,
+        //        (dv.Cantidad * dv.PrecioUnitario) AS Subtotal
+        // FROM Ventas v
+        // INNER JOIN Clientes c ON v.ClienteId = c.Id
+        // INNER JOIN DetallesVenta dv ON dv.VentaId = v.Id
+        // INNER JOIN Producto p ON dv.ProductoId = p.Id
+        // WHERE v.ClienteId = @idCliente
 
     }
 }
