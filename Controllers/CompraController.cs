@@ -17,9 +17,10 @@ namespace Proyecto_Empresa_Mayorista.Controllers
         }
 
         [HttpGet]
+        
         public async Task<ActionResult<IEnumerable<Compra>>> GetCompras()
         {
-            return await _context.Compra.ToListAsync();
+            return await _context.Compra.Include(c => c.Detalles).ThenInclude(dv => dv.Producto).ToListAsync();
         }
 
         [HttpGet("{id}")]
